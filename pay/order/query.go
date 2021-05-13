@@ -12,6 +12,7 @@ var queryGateway = "https://api.mch.weixin.qq.com/pay/orderquery"
 
 // QueryParams 传入的参数
 type QueryParams struct {
+	AppID         string
 	OutTradeNo    string // 商户订单号
 	SignType      string // 签名类型
 	TransactionID string // 微信订单号
@@ -37,7 +38,7 @@ func (o *Order) QueryOrder(p *QueryParams) (paidResult notify.PaidResult, err er
 	}
 
 	params := make(map[string]string)
-	params["appid"] = o.AppID
+	params["appid"] = p.AppID
 	params["mch_id"] = o.MchID
 	params["nonce_str"] = nonceStr
 	params["out_trade_no"] = p.OutTradeNo
@@ -49,7 +50,7 @@ func (o *Order) QueryOrder(p *QueryParams) (paidResult notify.PaidResult, err er
 		return
 	}
 	request := queryRequest{
-		AppID:         o.AppID,
+		AppID:         p.AppID,
 		MchID:         o.MchID,
 		NonceStr:      nonceStr,
 		Sign:          sign,

@@ -23,6 +23,7 @@ func NewRefund(cfg *config.Config) *Refund {
 
 // Params 调用参数
 type Params struct {
+	AppID         string
 	TransactionID string
 	OutRefundNo   string
 	OutTradeNo    string
@@ -126,7 +127,7 @@ func (refund *Refund) Refund(p *Params) (rsp Response, err error) {
 func (refund *Refund) GetSignParam(p *Params) (param map[string]string) {
 	nonceStr := util.RandomStr(32)
 	param = make(map[string]string)
-	param["appid"] = refund.AppID
+	param["appid"] = p.AppID
 	param["mch_id"] = refund.MchID
 	param["nonce_str"] = nonceStr
 	param["out_refund_no"] = p.OutRefundNo

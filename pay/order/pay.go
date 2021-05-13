@@ -31,6 +31,7 @@ func NewOrder(cfg *config.Config) *Order {
 // Params was NEEDED when request Unified order
 // 传入的参数，用于生成 prepay_id 的必需参数
 type Params struct {
+	AppID      string
 	TotalFee   string
 	CreateIP   string
 	Body       string
@@ -149,7 +150,7 @@ func (o *Order) PrePayOrder(p *Params) (payOrder PreOrder, err error) {
 		notifyURL = p.NotifyURL
 	}
 	param := make(map[string]string)
-	param["appid"] = o.AppID
+	param["appid"] = p.AppID
 	param["body"] = p.Body
 	param["mch_id"] = o.MchID
 	param["nonce_str"] = nonceStr
@@ -169,7 +170,7 @@ func (o *Order) PrePayOrder(p *Params) (payOrder PreOrder, err error) {
 		return
 	}
 	request := payRequest{
-		AppID:          o.AppID,
+		AppID:          p.AppID,
 		MchID:          o.MchID,
 		NonceStr:       nonceStr,
 		Sign:           sign,

@@ -26,6 +26,7 @@ func NewTransfer(cfg *config.Config) *Transfer {
 
 //Params 调用参数
 type Params struct {
+	AppID          string
 	DeviceInfo     string
 	PartnerTradeNo string
 	OpenID         string
@@ -73,7 +74,7 @@ type Response struct {
 func (transfer *Transfer) WalletTransfer(p *Params) (rsp Response, err error) {
 	nonceStr := util.RandomStr(32)
 	param := make(map[string]string)
-	param["mch_appid"] = transfer.AppID
+	param["mch_appid"] = p.AppID
 	param["mchid"] = transfer.MchID
 	param["nonce_str"] = nonceStr
 	param["partner_trade_no"] = p.PartnerTradeNo
@@ -99,7 +100,7 @@ func (transfer *Transfer) WalletTransfer(p *Params) (rsp Response, err error) {
 	}
 
 	req := request{
-		AppID:          transfer.AppID,
+		AppID:          p.AppID,
 		MchID:          transfer.MchID,
 		NonceStr:       nonceStr,
 		Sign:           sign,
